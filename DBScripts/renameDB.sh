@@ -1,14 +1,20 @@
 #!/bin/bash
-ls
+echo "your data bases are :"
+ls ./databases
+echo "#######################"
+read -p "which name do you want to change : " oldName
 
-
-if [ $# -eq 1 ]
-	then
-	if [ -d $1 ]
-		then
-		echo "invalid operation as name already exist"
-	else
-		mv ~/project/data/$1
+if line=`ls ./databases | grep $oldName`
+	then 
+	echo "exist"
+	read -p "please Enter your name : " newName
+	mv ./databases/$oldName ./databases/$newName
+	echo "Successfull Renaming"
+	. ./main.sh
 else
-	echo "invalid input; only enter one argument"
+	echo "this name does not exist please type it correct again"
+	. ./DBScripts/renameDB.sh
 fi
+
+
+
