@@ -26,9 +26,9 @@ function menuBack
 	esac
 }
 
-###########################################
+###################################################
 ## to create data bases container if it is not exit
-###########################################
+###################################################
 
 echo "#######################"
 if [ -d databases ]
@@ -42,7 +42,7 @@ echo "#######################"
 #############################################
 
 
-
+#############################################
 ## Star Menu ###
 #############################################
 echo "please select one from the following options"
@@ -58,10 +58,9 @@ do
             ;;
         "Drop DB" )
             echo "done 3"
-			. ./DBScripts/test.sh
             ;;
         "Use Specific DB" )
-    		echo "done 4"
+			. ./DBSelectionMenu.sh
             ;;
 		* )
 			echo "ay 7aga"
