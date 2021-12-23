@@ -13,6 +13,8 @@ if line=`ls ./databases | grep $oldName`
 	. ./main.sh
 else
 	echo "this name does not exist please type it correct again"
+	read -p "if you change ur mind you can back to main menu by pressing y or press n for continue" answer
+	menuBack $answer
 	. ./DBScripts/renameDB.sh
 fi
 

@@ -3,7 +3,28 @@
 ########################################################
 ## function to let u back to menu according to yes or no
 ########################################################
-
+function menuBack
+{
+	case $1 in 
+		[Yy][Ee][Ss] )	
+			echo "#######################"		
+			echo "back to main menu "
+			. ./main.sh
+			;;
+		[Yy])
+			echo "#######################"
+			echo "back to main menu "
+			. ./main.sh
+			;;
+		[Nn][Oo] )
+			;;
+		[Nn] )
+			;;
+		* )
+			read -p "not valid input please try again and enter y or n" answer
+			menuBack $answer
+	esac
+}
 
 ###########################################
 ## to create data bases container if it is not exit
@@ -33,11 +54,11 @@ do
 			. ./DBScripts/createDB.sh $name
 			;;
         "Rename DB" )
-             echo "done 2"
-			./DBScripts/renameDB.sh
+			. ./DBScripts/renameDB.sh
             ;;
         "Drop DB" )
             echo "done 3"
+			. ./DBScripts/test.sh
             ;;
         "Use Specific DB" )
     		echo "done 4"
