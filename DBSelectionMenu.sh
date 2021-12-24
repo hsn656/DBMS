@@ -18,7 +18,7 @@ if [ -d ./databases/$dbname ]
                 echo "update table"
                 ;;
             "insert record" )
-                echo "insert record"
+                . ./TableScripts/insertRecord.sh
                 ;;
             "Delete from table" )
                 echo "Delete from table"

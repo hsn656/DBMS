@@ -49,7 +49,7 @@ else
             read -p "is this feild is a primary key? [Y/N] : " IsPK
             if [[ $IsPK == *(y)*(Y)*(yes)*(YES)*(Yes) ]]
             then
-                echo -n "(PK)" >> ./databases/$dbname/$tableName
+                echo -n "%PK%" >> ./databases/$dbname/$tableName
                 NoPK_Yet="false"
                 break
             elif [[ $IsPK = *(N)*(n)*(NO)*(No)*(no) ]]
@@ -74,9 +74,9 @@ else
         ## write in the table file; check to stop adding ":" in the last field
         if [ $i -eq $coloumnsNomber ]
             then
-            echo -n $coloumnsName"("$dataType")" >> ./databases/$dbname/$tableName
+            echo $coloumnsName"%"$dataType"%" >> ./databases/$dbname/$tableName
         else
-            echo -n $coloumnsName"("$dataType"):" >> ./databases/$dbname/$tableName
+            echo -n $coloumnsName"%"$dataType"%:" >> ./databases/$dbname/$tableName
         fi
         ##############################
         ((i=$i+1))
