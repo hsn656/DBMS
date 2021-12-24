@@ -41,12 +41,13 @@ fi
 echo "#######################"
 #############################################
 
+PS3="Enter Number of option : "
 
 #############################################
 ## Star Menu ###
 #############################################
 echo "please select one from the following options"
-select option in "Create DB" "Rename DB" "Drop DB" "Use Specific DB"
+select option in "Create DB" "Rename DB" "Drop DB" "Connect to DB"
 do 
 	case $option in
 		"Create DB" )
@@ -59,7 +60,7 @@ do
         "Drop DB" )
             echo "done 3"
             ;;
-        "Use Specific DB" )
+        "Connect to DB" )
 			. ./DBSelectionMenu.sh
             ;;
 		* )

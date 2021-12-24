@@ -2,14 +2,14 @@
 
 echo "Available Databases are : "
 ls ./databases
-read -p "Enter DB name: " dbName
-if [ -d $dbname ]
+read -p "enter DB Name : " dbname
+if [ -d ./databases/$dbname ]
     then
     select option in "create table" "drop table" "update table" "insert record" "Delete from table" "Select from table"
     do
         case $option in 
             "create table" )
-                echo "create table"
+                . ./TableScripts/createTable.sh
                 ;;
             "drop table" )
                 echo "drop table"
@@ -38,3 +38,4 @@ if [ -d $dbname ]
 else
     echo "not valid"
 fi
+
