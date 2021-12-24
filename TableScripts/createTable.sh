@@ -47,12 +47,12 @@ else
         while [ $NoPK_Yet == "true" ]
         do
             read -p "is this feild is a primary key? [Y/N] : " IsPK
-            if [[ $IsPK == *(y)*(Y) ]]
+            if [[ $IsPK == *(y)*(Y)*(yes)*(YES)*(Yes) ]]
             then
                 echo -n "(PK)" >> ./databases/$dbname/$tableName
                 NoPK_Yet="false"
                 break
-            elif [[ $IsPK = *(N)*(n) ]]
+            elif [[ $IsPK = *(N)*(n)*(NO)*(No)*(no) ]]
             then
                 break
             fi
@@ -66,7 +66,7 @@ else
         while [[ "$dataType" != *(int)*(string) || -z $dataType ]]
         do
 			echo "Invalid datatype";
-			read -p "Enter a valid column $i datatype again : [string/int]" dataType;
+			read -p "Enter a valid column $i datatype again : [string/int] " dataType;
 		done
         ##############################
 
