@@ -1,6 +1,6 @@
 #!/bin/bash
 
-read -p "Table name is : " tableName
+read -p "Enter table name you want to create : " tableName
 
 ## this variable is to check PK 
 NoPK_Yet="true"

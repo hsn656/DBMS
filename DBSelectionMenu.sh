@@ -13,6 +13,7 @@ if [ -d ./databases/$dbname ]
                 ;;
             "drop table" )
                 echo "drop table"
+                . ./TableScripts/dropTable.sh
                 ;;
             "update table" )
                 echo "update table"
