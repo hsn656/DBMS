@@ -1,26 +1,4 @@
-dbname="hsn"
 
-function insertField {
-      if [ $i -eq $coloumnsNomber ]
-                then
-                echo $1 >> ./databases/$dbname/$tableName
-            else
-                echo -n $1":" >> ./databases/$dbname/$tableName
-      fi
-}
-
-function checkInt {
-    expr $1 + 1 2> /dev/null >> /dev/null
-}
-
-function checkPK {
-    if `cut -f$1 -d: ./databases/hsn/test | grep $2 >> /dev/null 2>/dev/null`
-        then
-        return 1
-    else
-        return 0
-    fi
-}
 
 
 echo "avilable tables are : "

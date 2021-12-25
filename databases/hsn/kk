@@ -1,0 +1,2 @@
+id%int%:%PK%name%string%:age%int%
+1:aa:23
