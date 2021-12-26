@@ -15,7 +15,7 @@ function checkInt {
 }
 
 function checkPK {
-    if `cut -f$1 -d: ./databases/hsn/test | grep $2 >> /dev/null 2>/dev/null`
+    if `cut -f$1 -d: ./databases/hsn/test | grep -w $2 >> /dev/null 2>/dev/null`
         then
         return 1
     else

@@ -35,6 +35,8 @@ if [ -a ./databases/$dbname/$tableName ]
             echo $i"-" ${coloumnsNames[i]} "("${coloumnsTypes[i]}")"
         done
         
+        ###############################################
+        ## get index of the coloumn he wanted to update
         read -p "enter nomber of coloumn you want to update : " coloumnIndex 
         checkInt $coloumnIndex
         while [[ $? -ne 0 || $coloumnIndex -le 0 ]]
@@ -44,6 +46,8 @@ if [ -a ./databases/$dbname/$tableName ]
             checkInt $coloumnIndex
         done 
 
+        ##############################################
+        ## check data type of new value
         read -p "Enter a new value of type (${coloumnsTypes[coloumnIndex]}) : " newValue;
         if [ ${coloumnsTypes[coloumnIndex]} == "int" ]
             then
@@ -55,6 +59,22 @@ if [ -a ./databases/$dbname/$tableName ]
                 checkInt $newValue
             done
         fi
+
+        for (( i=1; i <= $coloumnsNomber; i++ ))
+        do
+            echo $i"-" ${coloumnsNames[i]} "("${coloumnsTypes[i]}")"
+        done
+
+        ###############################################
+        ## get index of the condition coloumn
+        read -p " which coloumn number you want to use for condition " coloumnIndex 
+        checkInt $coloumnIndex
+        while [[ $? -ne 0 || $coloumnIndex -le 0 ]]
+        do
+            echo "please enter a valid value"
+            read -p "enter nomber of coloumn you want to update : " coloumnIndex 
+            checkInt $coloumnIndex
+        done 
 
         
 else
