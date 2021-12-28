@@ -18,13 +18,13 @@ if [ -a ./databases/$dbname/$tableName ]
     coloumnsNomber=`awk -F: 'NR==1 {print NF}' ./databases/$dbname/$tableName`
         for (( i=1; i <= $coloumnsNomber; i++ ))
         do
+            #######################
+            ## this if condition because cut in case of pk is different
             if testPK=`grep "%:" ./databases/$dbname/$tableName | cut -d ":" -f$i | grep "%PK%" ` 
             then
-                echo "PK"
                 coloumnsNames[$i]=`grep "%:" ./databases/$dbname/$tableName | cut -d ":" -f$i | cut -d "%" -f3 `
                 coloumnsTypes[$i]=`grep "%:" ./databases/$dbname/$tableName | cut -d ":" -f$i | cut -d "%" -f4 `
             else
-                echo "NO PK"
                 coloumnsNames[$i]=`grep "%:" ./databases/$dbname/$tableName | cut -d ":" -f$i | cut -d "%" -f1 `
                 coloumnsTypes[$i]=`grep "%:" ./databases/$dbname/$tableName | cut -d ":" -f$i | cut -d "%" -f2 `
             fi
@@ -35,8 +35,6 @@ if [ -a ./databases/$dbname/$tableName ]
             echo $i"-" ${coloumnsNames[i]} "("${coloumnsTypes[i]}")"
         done
         
-
-        awk -F: -v c=${coloumnsNames[1]} '{print c }' ./databases/$dbname/$tableName
 
         ###############################################
         ## get index of the coloumn he wanted to update
@@ -62,7 +60,8 @@ if [ -a ./databases/$dbname/$tableName ]
                 checkInt $newValue
             done
         fi
-
+        ####################
+        ## check if he update pk
 
         ################################
         ## read condition   
@@ -75,7 +74,7 @@ if [ -a ./databases/$dbname/$tableName ]
         ## check if condition index is a number 
         read -p "condition on which coloumn number : " conditionIndex 
         checkInt $conditionIndex
-        while [[ $? -ne 0 || $conditionIndex -le 0 || $coloumnIndex -gt $coloumnsNomber ]]
+        while [[ $? -ne 0 || $conditionIndex -le 0 || $conditionIndex -gt $coloumnsNomber ]]
         do
             echo "please enter a valid value"
             read -p "enter nomber of coloumn you want to update : " conditionIndex 
@@ -97,8 +96,30 @@ if [ -a ./databases/$dbname/$tableName ]
             done
         fi
 
-
+        ###############################
+        ## to update table
+        awk -F:  '( NR!=1 && $"'$conditionIndex'"=="'$conditionValue'" ) {$"'$coloumnIndex'"="'$newValue'"} {for(i=1 ;i<=NF ;i++ ) { if (i==NF) print $i; else printf "%s",$i":"}}' ./databases/$dbname/$tableName > ./tmp;
+       
+        #####################################
+        ## to prevent update if it violate pk
+        if testPK=`grep "%:" ./databases/$dbname/$tableName | cut -d ":" -f$coloumnIndex | grep "%PK%" ` 
+        then 
+            x=`cat ./tmp | cut -f$coloumnIndex -d:| grep -w $newValue|wc -l | cut -f1 -d" "`
+            echo $x
+            if [ $x -gt 1 ]
+            then
+                echo "update fail due to PK constraint violation"
+                 rm ./tmp;
+            fi   
+        fi
         
+        if [ -a ./tmp ]
+        then
+            cat ./tmp > ./databases/$dbname/$tableName;
+            rm ./tmp;
+            echo "update successfull"
+        fi
+
 else
     echo "there is no such table"
 fi
