@@ -58,7 +58,7 @@ do
 			. ./DBScripts/renameDB.sh
             ;;
         "Drop DB" )
-            echo "done 3"
+            ./DBScripts/dropDB.sh
             ;;
         "Connect to DB" )
 			. ./DBSelectionMenu.sh
