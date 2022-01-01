@@ -24,12 +24,11 @@ function checkPK {
 }
 
 
-echo "Available Databases are : "
-ls ./databases
+echo "Available Databases are : " ls ./databases
 read -p "enter DB Name : " dbname
 if [ -d ./databases/$dbname ]
     then
-    select option in "create table" "drop table" "update table" "insert record" "Delete from table" "Select from table"
+    select option in "create table" "drop table" "Rename table" "update table" "insert record" "Delete from table" "Select from table"
     do
         case $option in 
             "create table" )
@@ -39,6 +38,9 @@ if [ -d ./databases/$dbname ]
                 echo "drop table"
                 . ./TableScripts/dropTable.sh
                 ;;
+            "Rename table" )
+                . ./TableScripts/renameTable.sh
+                ;;    
             "update table" )
                 . ./TableScripts/updateRecord.sh
                 ;;
