@@ -1,10 +1,10 @@
 #!/bin/bash
 ##for testing and trying
+## %id%int%Pk%
 
-x=`wc -l reminders | cut -f1 -d" " `
-if [ $x -ge 10 ]
-then
-	echo $x
-else 
-	echo hhh
-fi
+
+grep "%," ./databases/hsn/t | cut -d "," -f$i | cut -d "%" -f2
+grep "%," ./databases/hsn/t | cut -d "," -f$i | cut -d "%" -f3
+
+
+awk -F, 'NR>1 {for(i=1 ;i<=NF ;i++ ) {if (i==NF) print $i; else printf "%s","\t"$i"\t"}}' ./databases/hsn/t
