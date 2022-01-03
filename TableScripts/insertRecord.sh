@@ -1,8 +1,5 @@
-
-
-
 echo "avilable tables are : "
-ls ./databases/$dbname
+ls -1 ./databases/$dbname
 read -p "please enter table name : " tableName
 if [ -a ./databases/$dbname/$tableName ]
     then

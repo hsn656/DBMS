@@ -24,7 +24,8 @@ function checkPK {
 }
 
 
-echo "Available Databases are : " ls ./databases
+echo "Available Databases are : " 
+ls -1 ./databases
 read -p "enter DB Name : " dbname
 if [ -d ./databases/$dbname ]
     then
@@ -48,7 +49,7 @@ if [ -d ./databases/$dbname ]
                 . ./TableScripts/insertRecord.sh
                 ;;
             "Delete from table" )
-                echo "Delete from table"
+                . ./TableScripts/deleteRecord.sh
                 ;;
             "Select from table" )
                 echo "Select from table"
