@@ -5,6 +5,15 @@ dbname="hsn"
 function checkInt {
     expr $1 + 1 2> /dev/null >> /dev/null
 }
+
+function checkPK {
+   if `cut -f$1 -d: ./databases/hsn/test | grep -w $2 >> /dev/null 2>/dev/null`
+        then
+        return 1
+    else
+        return 0
+    fi 
+}
 #############################
 
 
@@ -18,7 +27,7 @@ if [ -a ./databases/$dbname/$tableName ]
     coloumnsNomber=`awk -F: 'NR==1 {print NF}' ./databases/$dbname/$tableName`
         for (( i=1; i <= $coloumnsNomber; i++ ))
         do
-            #######################
+            #######################    
             ## this if condition because cut in case of pk is different
             if testPK=`grep "%:" ./databases/$dbname/$tableName | cut -d ":" -f$i | grep "%PK%" ` 
             then
@@ -30,6 +39,7 @@ if [ -a ./databases/$dbname/$tableName ]
             fi
         done
         
+        echo "table columns are : "
         for (( i=1; i <= $coloumnsNomber; i++ ))
         do
             echo $i"-" ${coloumnsNames[i]} "("${coloumnsTypes[i]}")"
@@ -63,6 +73,17 @@ if [ -a ./databases/$dbname/$tableName ]
         ####################
         ## check if he update pk
 
+        if testPK=`grep "%:" ./databases/$dbname/$tableName | cut -d ":" -f$coloumnIndex | grep "%PK%" ` 
+        then
+            checkPK $coloumnIndex $newValue
+            while [ $? != 0 ]
+            do
+                echo "Violation of PK constraint"
+                echo "please enter a valid value"
+                read -p "enter (${coloumnsNames[coloumnIndex]}) of type (${coloumnsTypes[coloumnIndex]}) : " newValue
+                checkPK $coloumnIndex $newValue
+            done
+        fi
         ################################
         ## read condition   
         for (( i=1; i <= $coloumnsNomber; i++ ))
@@ -77,7 +98,7 @@ if [ -a ./databases/$dbname/$tableName ]
         while [[ $? -ne 0 || $conditionIndex -le 0 || $conditionIndex -gt $coloumnsNomber ]]
         do
             echo "please enter a valid value"
-            read -p "enter nomber of coloumn you want to update : " conditionIndex 
+            read -p "condition on which coloumn number : " conditionIndex 
             checkInt $conditionIndex
         done 
 
@@ -96,10 +117,11 @@ if [ -a ./databases/$dbname/$tableName ]
             done
         fi
 
-        ###############################
-        ## to update table
+        ############################### ci=2 && cvalue=hsn >>> $2==hsn && 3=>23 >>>> $3=23
+        ## to update table 
         awk -F:  '( NR!=1 && $"'$conditionIndex'"=="'$conditionValue'" ) {$"'$coloumnIndex'"="'$newValue'"} {for(i=1 ;i<=NF ;i++ ) { if (i==NF) print $i; else printf "%s",$i":"}}' ./databases/$dbname/$tableName > ./tmp;
-       
+        
+
         #####################################
         ## to prevent update if it violate pk
         if testPK=`grep "%:" ./databases/$dbname/$tableName | cut -d ":" -f$coloumnIndex | grep "%PK%" ` 
