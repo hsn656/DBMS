@@ -1,5 +1,4 @@
 #!/bin/bash
-
 ## functions for table
 function insertField {
       if [ $i -eq $coloumnsNomber ]

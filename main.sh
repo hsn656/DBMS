@@ -54,16 +54,24 @@ echo "please select one from the following options"
 select option in "Create DB" "Rename DB" "Drop DB" "Connect to DB"
 do 
 	case $option in
-		"Create DB" )	
+		"Create DB" )
+			echo -n "creating a new Db .."
+			waitAndClear	
 			. ./DBScripts/createDB.sh $name
 			;;
         "Rename DB" )
+			echo -n "renaming Database .."
+			waitAndClear
 			. ./DBScripts/renameDB.sh
             ;;
         "Drop DB" )
-            ./DBScripts/dropDB.sh
+			echo -n "Dropping Database .."
+			waitAndClear
+            . ./DBScripts/dropDB.sh
             ;;
         "Connect to DB" )
+			echo -n "Connecting to Database .."
+			waitAndClear
 			. ./DBSelectionMenu.sh
             ;;
 		* )
