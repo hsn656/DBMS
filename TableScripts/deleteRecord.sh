@@ -57,7 +57,7 @@ if [ -a ./databases/$dbname/$tableName ]
 
         ##############################################
         ## check data type of condition value
-        read -p "Enter a condtion value of type (${coloumnsTypes[conditionIndex]}) : " conditionValue;
+        read -p "condtion value of type (${coloumnsTypes[conditionIndex]}) to delete at: " conditionValue;
         if [ ${coloumnsTypes[conditionIndex]} == "int" ]
             then
             checkInt $conditionValue
@@ -82,5 +82,5 @@ if [ -a ./databases/$dbname/$tableName ]
         fi
 
 else
-    printFailure "there is no such table"
+    printWarning "there is no such table"
 fi

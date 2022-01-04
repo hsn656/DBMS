@@ -64,7 +64,7 @@ if [ -d ./databases/$dbname ]
                 echo "Select from table"
                 ;;
             * )
-                printFailure "not valid option"
+                printWarning "not valid option"
                 read -p "please try a valid option or you can go to main menu by pressing y? " answer
                 menuBack $answer
                 echo $PWD
@@ -73,6 +73,6 @@ if [ -d ./databases/$dbname ]
         esac
     done
 else
-    printFailure "not valid"
+    printWarning "not valid"
 fi
 

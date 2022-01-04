@@ -38,22 +38,22 @@ function printWithBoarder
 #Message Colors 
 Red="\e[31m"
 Green="\e[32m"
-Yellow"\e[33m"
+Yellow="\e[33m"
 ENDCOLOR="\e[0m"
 
 function printWarning
 {
-	echo -e "$Yellow$1$ENDCOLOR"
+	echo -e "$Yellow$1  ⚠️$ENDCOLOR"
 }
 
 function printSucceful
 {
-	echo -e "$Green$1$ENDCOLOR"
+	echo -e "$Green$1 ✅$ENDCOLOR"
 }
 
 function printFailure
 {
-	echo -e "$Red$1$ENDCOLOR"
+	echo -e "$Red$1 ⛔$ENDCOLOR"
 }
 
 ######################################################
