@@ -14,7 +14,15 @@ function checkInt {
     expr $1 + 1 2> /dev/null >> /dev/null
 }
 
+##############################
+## temp for test
+dbname="hsn"
 
+function checkInt {
+    expr $1 + 1 2> /dev/null >> /dev/null
+}
+
+#############################
 
 function checkPK {
    if `cut -f$1 -d: ./databases/hsn/test | grep -w $2 >> /dev/null 2>/dev/null`
@@ -26,7 +34,7 @@ function checkPK {
 }
 
 
-echo "Available Databases are : " ls ./databases
+printWithBoarder "Available Databases are : " "ls -1 ./databases"
 read -p "enter DB Name : " dbname
 if [ -d ./databases/$dbname ]
     then
@@ -50,13 +58,13 @@ if [ -d ./databases/$dbname ]
                 . ./TableScripts/insertRecord.sh
                 ;;
             "Delete from table" )
-                echo "Delete from table"
+                . ./TableScripts/deleteRecord.sh
                 ;;
             "Select from table" )
                 echo "Select from table"
                 ;;
             * )
-                echo "not valid option"
+                printWarning "not valid option"
                 read -p "please try a valid option or you can go to main menu by pressing y? " answer
                 menuBack $answer
                 echo $PWD
@@ -65,6 +73,6 @@ if [ -d ./databases/$dbname ]
         esac
     done
 else
-    echo "not valid"
+    printWarning "not valid"
 fi
 
