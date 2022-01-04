@@ -14,7 +14,15 @@ function checkInt {
     expr $1 + 1 2> /dev/null >> /dev/null
 }
 
+##############################
+## temp for test
+dbname="hsn"
 
+function checkInt {
+    expr $1 + 1 2> /dev/null >> /dev/null
+}
+
+#############################
 
 function checkPK {
    if `cut -f$1 -d: ./databases/hsn/test | grep -w $2 >> /dev/null 2>/dev/null`

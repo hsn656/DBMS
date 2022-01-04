@@ -1,11 +1,13 @@
 
 ##############################
 ## temp for test
-#dbname="hsn"
+dbname="hsn"
 
 function checkInt {
     expr $1 + 1 2> /dev/null >> /dev/null
 }
+
+
 #############################
 
 
