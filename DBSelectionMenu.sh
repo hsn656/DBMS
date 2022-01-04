@@ -34,8 +34,7 @@ function checkPK {
 }
 
 
-echo "Available Databases are : " 
-ls -1 ./databases
+printWithBoarder "Available Databases are : " "ls -1 ./databases"
 read -p "enter DB Name : " dbname
 if [ -d ./databases/$dbname ]
     then
@@ -65,7 +64,7 @@ if [ -d ./databases/$dbname ]
                 echo "Select from table"
                 ;;
             * )
-                echo "not valid option"
+                printFailure "not valid option"
                 read -p "please try a valid option or you can go to main menu by pressing y? " answer
                 menuBack $answer
                 echo $PWD
@@ -74,6 +73,6 @@ if [ -d ./databases/$dbname ]
         esac
     done
 else
-    echo "not valid"
+    printFailure "not valid"
 fi
 

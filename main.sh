@@ -27,11 +27,33 @@ function menuBack
 }
 #	$2 | expand | awk 'length($0) > length(longest) { longest = $0 } { lines[NR] = $0 } END { gsub(/./, "=", longest); print "+=" longest "=\+"; n = length(longest); for(i = 1; i <= NR; ++i) { printf("| %s %*s\n", lines[i], n - length(lines[i]) + 1, "|"); } print "+\=" longest "=+" }'
 
-function printWithBorder 
+function printWithBoarder 
 {
     printf "$1\n\n" > .printtmp
     $2 >> .printtmp
 	cat .printtmp | expand |awk 'length($0) > length(longest) { longest = $0 } { lines[NR] = $0 } END { gsub(/./, "=", longest); print "+=" longest "=\+"; n = length(longest); for(i = 1; i <= NR; ++i) { printf("| %s %*s\n", lines[i], n - length(lines[i]) + 1, "|"); } print "+\=" longest "=+" }' 2> .tmp;
+}
+
+###############
+#Message Colors 
+Red="\e[31m"
+Green="\e[32m"
+Yellow"\e[33m"
+ENDCOLOR="\e[0m"
+
+function printWarning
+{
+	echo -e "$Yellow$1$ENDCOLOR"
+}
+
+function printSucceful
+{
+	echo -e "$Green$1$ENDCOLOR"
+}
+
+function printFailure
+{
+	echo -e "$Red$1$ENDCOLOR"
 }
 
 ######################################################

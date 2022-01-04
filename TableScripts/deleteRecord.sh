@@ -12,7 +12,7 @@ function checkInt {
 
 
 
-printWithBorder "avilable tables are : " "ls -1 ./databases/$dbname"
+printWithBoarder "avilable tables : " "ls -1 ./databases/$dbname"
 read -p "please enter table name : " tableName
 
 
@@ -49,7 +49,7 @@ if [ -a ./databases/$dbname/$tableName ]
         checkInt $conditionIndex
         while [[ $? -ne 0 || $conditionIndex -le 0 || $conditionIndex -gt $coloumnsNomber ]]
         do
-            echo "please enter a valid value"
+            printWarning "please enter a valid value"
             read -p "condition on which coloumn number : " conditionIndex 
             checkInt $conditionIndex
         done 
@@ -63,7 +63,7 @@ if [ -a ./databases/$dbname/$tableName ]
             checkInt $conditionValue
             while [ $? != 0 ]
             do
-                echo "please enter a valid value"
+                printWarning "please enter a valid value"
                 read -p "enter (${coloumnsNames[conditionIndex]}) of type (${coloumnsTypes[conditionIndex]}) : " conditionValue
                 checkInt $conditionValue
             done
@@ -78,9 +78,9 @@ if [ -a ./databases/$dbname/$tableName ]
         then
             cat ./.tmp > ./databases/$dbname/$tableName;
             rm ./.tmp;
-            echo "Deleted successfully"
+            printSucceful "Deleted successfully"
         fi
 
 else
-    echo "there is no such table"
+    printFailure "there is no such table"
 fi
