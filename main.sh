@@ -4,6 +4,11 @@
 ## function to let u back to menu according to yes or no
 ########################################################
 ###############
+shopt -s extglob
+export LC_COLLATE=C
+
+
+
 #Message Colors 
 Red="\e[31m"
 Green="\e[32m"
@@ -27,12 +32,30 @@ function printFailure
 	echo -e "$Red$1 ⛔$ENDCOLOR"
 }
 
+function printInfo
+{
+	echo -e "$Blue$1 $ENDCOLOR"
+}
+
 function printWithBoarder 
 {
     echo -e "$1" > .printtmp
     $2 >> .printtmp
 	cat .printtmp | expand |awk 'length($0) > length(longest) { longest = $0 } { lines[NR] = $0 } END { gsub(/./, "=", longest); print "+=" longest "=\+"; n = length(longest); for(i = 1; i <= NR; ++i) { printf("| %s %*s\n", lines[i], n - length(lines[i]) + 1, "|"); } print "+\=" longest "=+" }' 2> .tmp;
 }
+
+function isValidName
+{
+	if [[ $1 =~ ^[A-Za-z]+$ ]] 
+	then
+		#true "valid Name the contain onlt characters"
+		return 0
+	else 
+		#conatin special char or number
+		return 1 
+	fi
+}
+
 
 
 function waitAndClear {
@@ -49,16 +72,15 @@ function menuBack
 {
 	case $1 in 
 		[Yy][Ee][Ss] )	
-			echo "#######################"		
-			echo "back to main menu "
-			. ./main.sh
+			echo -n "Back to Main Menu .."
+			waitAndClear
+			printWithBoarder "  Back to Main Menu   "
+			mainMenu
 			;;
 		[Yy])
 			echo -n "Back to Main Menu .."
 			waitAndClear
-			echo "+-----------------------+"
-			echo "|   Back to main menu   |"
-			echo "+-----------------------+"
+			printWithBoarder "  Back to Main Menu   "
 			mainMenu
 			;;
 		[Nn][Oo] )
@@ -74,7 +96,7 @@ function menuBack
 
 function mainMenu {
 echo "please select one from the following options"
-select option in "Create DB" "Rename DB" "Drop DB" "Connect to DB"
+select option in "Create DB" "Rename DB" "Drop DB" "Connect to DB" "Exit"
 do 
 	case $option in
 		"Create DB" )
@@ -97,22 +119,34 @@ do
 			waitAndClear
 			. ./DBSelectionMenu.sh
             ;;
+		"Exit" )
+			echo "Bye"
+			exit
+            ;;
 		* )
-			echo "ay 7aga"
+			printWarning "not valid input, please Try again"
+			sleep .3
+			echo -n "loading again .."
+			waitAndClear
+			mainMenu
 			;;
 	esac
 done
 }
 
 
+###############
+#Message Colors 
+
+
 
 ######################################################
+##		  			 Script Start	    			##
+######################################################
+clear
+printWithBoarder "   Welcome in our DBMS  "
+
 ## to create data bases container if it is not exit ##
-######################################################
-echo "+------------------------+"
-echo "|   Welcome in our DBMS  |"
-echo "+------------------------+"
-
 if [ -d databases ]
 	then
 	echo -n ""
@@ -126,8 +160,3 @@ PS3="Enter Number of option : "
 
 mainMenu
 
-#############################################
-## Start Menu ###
-#############################################
-
-#############################################

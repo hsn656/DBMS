@@ -1,34 +1,52 @@
 #!/bin/bash
-echo "+-----------------------+"
-echo "|   Creating Datebase   |"
-echo "+-----------------------+"
-echo "Avilable Databases are :"
-ls ./databases
-echo "===================================="
+printWithBoarder "   Renaming Datebase   "
+printWithBoarder "Avilable Databases are : " "ls ./databases"
 
-read -p "which db do you want to rename (old name) : " oldName
+read -p "which db do you want to rename : " oldName
 
-if line=`ls ./databases | grep $oldName`
-	then 
-	read -p "please Enter DB name (new name): " newName
-	mv ./databases/$oldName ./databases/$newName
-	sleep .7
-	echo "Successfull Renaming from $oldName to $newName"
+if [ $oldName ]
+then
+	if line=`ls ./databases | grep $oldName`
+		then 
+		read -p "please Enter DB name (new name): " newName
+		if [ -d ./databases/$newName  ]
+		then
+			printFailure "DB with the name \"$newName\" already exists"
+			printInfo "Press [y] to go back to main menu or press [n] to rename another database : "
+			read answer	
+			menuBack $answer
+			echo -n "renaming  Db .."
+			waitAndClear
+			. ./DBScripts/renameDB.sh
 
-	read -p "Press [y] to go back to main menu or press [n] to rename another database : " answer
-	menuBack $answer
-	echo -n "creating a new Db .."
-	waitAndClear
-	. ./DBScripts/renameDB.sh
-	
+		else
+		mv ./databases/$oldName ./databases/$newName
+		sleep .7
+		printSucceful "Successfull Renaming from \"$oldName\" to \"$newName\""
+		printInfo "Press [y] to go back to main menu or press [n] to rename another database : "
+		read answer	
+		menuBack $answer
+		echo -n "renaming  Db .."
+		waitAndClear
+		. ./DBScripts/renameDB.sh
+		fi
+	else
+		printFailure "\"$oldName\" does not exist please try again"
+		printInfo "Press [y] to go back to main menu or press [n] to rename another database : "
+		read answer	
+		menuBack $answer
+		echo -n "renaming  Db .."
+		waitAndClear
+		. ./DBScripts/renameDB.sh
+	fi
 else
-	echo "this name does not exist please type it correct again"
-	read -p "if you changed your mind you can back to main menu by pressing y or press n for continue" answer
+    printWarning "You cant enter Empty string"
+	printInfo "Press [y] to go back to main menu or press [n] to rename another database : "
+	read answer	
 	menuBack $answer
-	echo -n "renaming a new Db .."
+	echo -n "renaming Db .."
 	waitAndClear
 	. ./DBScripts/renameDB.sh
 fi
-
 
 

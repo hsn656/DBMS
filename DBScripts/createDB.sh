@@ -1,8 +1,5 @@
 #!/bin/bash
-#echo "+-----------------------+"
-#echo "|   Creating Datebase   |"
-#echo "+-----------------------+"
-# you colud replace the above way with the function below
+
 
 printWithBoarder "Creating Datebase"
 
@@ -11,23 +8,40 @@ printWithBoarder "Avilable Databases are : " "ls ./databases"
 
 echo "===================================="
 
-read -p "what is DB name? " dbname
+read -p "Enter new DB name? " dbname
 
-	if [ -d ./databases/$dbname ]
+
+
+
+if [ $dbname ]
+then
+    if [ -d ./databases/$dbname  ]
 		then
 		printFailure "DB already exists"
-		read -p "to back to main menu by pressing [y] or press [n] to try again : " answer
+		printInfo "Press [y] to go back to main menu or press [n] to create another database : "
+		read answer	
 		menuBack $answer
-		echo -n "creating a new Db .."
+		echo -n "creating a new Db .. "
 		waitAndClear
 		. ./DBScripts/createDB.sh
 	else
 		mkdir ./databases/$dbname
 		sleep .7
-		printSuccessful "1 DB with name $dbname has been created successfully"
-		read -p "Press [y] to go back to main menu or press [n] to create another database : " answer
+		echo -n "creating a new Db .. "
+		printSuccessful "\n1 DB with name \"$dbname\" has been created successfully"
+		printInfo "Press [y] to go back to main menu or press [n] to create another database : " 
+		read answer
 		menuBack $answer
-		echo -n "creating a new Db .."
 		waitAndClear
 		. ./DBScripts/createDB.sh
 	fi
+else
+    printWarning "You cant enter Empty string"
+	printInfo "Press [y] to go back to main menu or press [n] to create a database : "
+	read -p "[y] or [n]? " answer	
+	menuBack $answer
+	echo -n "creating a new Db .. \n"
+	waitAndClear
+	. ./DBScripts/createDB.sh
+fi
+
