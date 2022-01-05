@@ -18,16 +18,15 @@ function menuBack
 {
 	case $1 in 
 		[Yy][Ee][Ss] )	
-			echo "#######################"		
-			echo "back to main menu "
-			. ./main.sh
+			echo -n "Back to Main Menu .."
+			waitAndClear
+			printWithBoarder "  Back to Main Menu   "
+			mainMenu
 			;;
 		[Yy])
 			echo -n "Back to Main Menu .."
 			waitAndClear
-			echo "+-----------------------+"
-			echo "|   Back to main menu   |"
-			echo "+-----------------------+"
+			printWithBoarder "  Back to Main Menu   "
 			mainMenu
 			;;
 		[Nn][Oo] )
@@ -51,7 +50,7 @@ function printWithBoarder
 
 function mainMenu {
 echo "please select one from the following options"
-select option in "Create DB" "Rename DB" "Drop DB" "Connect to DB"
+select option in "Create DB" "Rename DB" "Drop DB" "Connect to DB" "Exit"
 do 
 	case $option in
 		"Create DB" )
@@ -74,8 +73,16 @@ do
 			waitAndClear
 			. ./DBSelectionMenu.sh
             ;;
+		"Exit" )
+			echo "Bye"
+			exit
+            ;;
 		* )
-			echo "ay 7aga"
+			printWarning "not valid input, please Try again"
+			sleep .3
+			echo -n "loading again .."
+			waitAndClear
+			mainMenu
 			;;
 	esac
 done
@@ -86,6 +93,7 @@ done
 Red="\e[31m"
 Green="\e[32m"
 Yellow="\e[33m"
+Blue="\e[34m"
 ENDCOLOR="\e[0m"
 
 function printWarning
@@ -102,14 +110,18 @@ function printFailure
 {
 	echo -e "$Red$1 ⛔$ENDCOLOR"
 }
+function printInfo
+{
+	echo -e "$Blue$1 $ENDCOLOR"
+}
 
 ######################################################
+##		  			 Script Start	    			##
+######################################################
+clear
+printWithBoarder "   Welcome in our DBMS  "
+
 ## to create data bases container if it is not exit ##
-######################################################
-echo "+------------------------+"
-echo "|   Welcome in our DBMS  |"
-echo "+------------------------+"
-
 if [ -d databases ]
 	then
 	echo -n ""
@@ -123,8 +135,3 @@ PS3="Enter Number of option : "
 
 mainMenu
 
-#############################################
-## Start Menu ###
-#############################################
-
-#############################################

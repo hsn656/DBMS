@@ -2,7 +2,7 @@
 ##for testing and trying
 
 read x
-if [ -z $x ]
+if [ $x ]
 then
     echo yes
 else
