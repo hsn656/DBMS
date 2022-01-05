@@ -2,8 +2,11 @@
 echo "+-----------------------+"
 echo "|   Creating Datebase   |"
 echo "+-----------------------+"
-echo "Avilable Databases are : "
+printWithBoarder "Creating Datebase"
+
+printWithBoarder "Avilable Databases are : " "ls ./databases"
 ls ./databases
+
 echo "===================================="
 
 read -p "what is DB name? " dbname

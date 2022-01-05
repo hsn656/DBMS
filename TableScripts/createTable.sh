@@ -13,15 +13,15 @@ if [ -a  ./databases/$dbname/$tableName ]
     . ./TableScripts/createTable.sh
 else
     touch ./databases/$dbname/$tableName
-    read -p "enter number of coloumns : " coloumnsNomber
+    read -p "Enter number of coloumns : " coloumnsNomber
 
     ############################################
     ## to check if number of coloumns is int
     expr $coloumnsNomber + 1 2> /dev/null >> /dev/null
     while [ $? != 0 ]
     do
-        echo "please enter a valid number"
-        read -p "enter number of coloumns : " coloumnsNomber
+        echo "Please enter a valid number"
+        read -p "Enter number of coloumns : " coloumnsNomber
         expr $coloumnsNomber + 1 2> /dev/null >> /dev/null
     done
     ############################################

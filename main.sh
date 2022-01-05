@@ -43,7 +43,7 @@ function menuBack
 
 function printWithBoarder 
 {
-    printf "$1\n\n" > .printtmp
+    printf "$1\n" > .printtmp
     $2 >> .printtmp
 	cat .printtmp | expand |awk 'length($0) > length(longest) { longest = $0 } { lines[NR] = $0 } END { gsub(/./, "=", longest); print "+=" longest "=\+"; n = length(longest); for(i = 1; i <= NR; ++i) { printf("| %s %*s\n", lines[i], n - length(lines[i]) + 1, "|"); } print "+\=" longest "=+" }' 2> .tmp;
 }
