@@ -4,22 +4,23 @@ read -p "Table name you want to drop : " tableName
 
 if [ -f  ./databases/$dbname/$tableName ]
 then
-    echo "Are you sure you want to delete $tableName"
+    printWarning "Are you sure you want to delete $tableName"
     select choice in 'y' 'n'
         do 
             case $choice in
             'y') 
                 rm ./databases/$dbname/$tableName
+                printSuccessful "Table $tableName deleted Successfully"
                 break
                 ;;
             'n') 
                 break
                 ;;
-            *) echo "Choose Valid Option" ;;
+            *) printWarning "Choose Valid Option" ;;
             esac
             done
 else
-    echo "$tableName Doesn't exist!"
+    printFailure "$tableName Doesn't exist!"
 fi
 
 

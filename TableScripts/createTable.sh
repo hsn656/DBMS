@@ -7,10 +7,13 @@ NoPK_Yet="true"
 
 if [ -a  ./databases/$dbname/$tableName ]
     then
-    echo "this table is already exist"
-    read -p "if you change ur mind you can back to main menu by pressing y or press n for continue : " answer
+    printFailure "this table is already exist"
+    read -p "Press [y] to go back to main menu or press [n] to create another database : " answer
     menuBack $answer
-    . ./TableScripts/createTable.sh
+    echo -n "creating a new Db .."
+    waitAndClear
+    . ./DBScripts/createTable.sh
+   
 else
     touch ./databases/$dbname/$tableName
     read -p "Enter number of coloumns : " coloumnsNomber
@@ -20,7 +23,7 @@ else
     expr $coloumnsNomber + 1 2> /dev/null >> /dev/null
     while [ $? != 0 ]
     do
-        echo "Please enter a valid number"
+        printWarning "Please enter a valid number"
         read -p "Enter number of coloumns : " coloumnsNomber
         expr $coloumnsNomber + 1 2> /dev/null >> /dev/null
     done
@@ -84,9 +87,12 @@ else
     done
 
     echo "###############################"
-    echo "1 Table was created successfully"
+    printSuccessful "1 Table was created successfully"
     echo "###############################"
-    echo "go back to main menu ... "
-    sleep 1
-    . ./main.sh
+    read -p "Press [y] to go back to main menu or press [n] to create another database : " answer
+    menuBack $answer
+    echo -n "creating a new Db .."
+    waitAndClear
+    . ./DBScripts/createTable.sh
+   
 fi

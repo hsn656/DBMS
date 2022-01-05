@@ -33,7 +33,7 @@ function checkPK {
 }
 
 
-printWithBoarder "Available Databases are : " "ls -1 ./databases"
+printWithBoarder "Available Databases are :" "ls -1 ./databases"
 read -p "enter DB Name : " dbname
 if [ -d ./databases/$dbname ]
     then

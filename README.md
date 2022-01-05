@@ -19,7 +19,7 @@ cd DBMS
 **Finally** run the main script:
 
 ```
-chmod +x main.sh
+chmod +x *
 ./main.sh
 ```
 </br></br>

@@ -78,7 +78,7 @@ if [ -a ./databases/$dbname/$tableName ]
         then
             cat ./.tmp > ./databases/$dbname/$tableName;
             rm ./.tmp;
-            printSucceful "Deleted successfully"
+            printSuccessful "Deleted successfully"
         fi
 
 else

@@ -3,14 +3,45 @@
 ########################################################
 ## function to let u back to menu according to yes or no
 ########################################################
+###############
+#Message Colors 
+Red="\e[31m"
+Green="\e[32m"
+Yellow="\e[0;33m"
+ENDCOLOR="\e[0m"
+bold="\033[1m"
+normal="\033[0m"
+
+function printWarning
+{
+	echo -e "$Yellow$1  ⚠️$ENDCOLOR"
+}
+
+function printSuccessful
+{
+	echo -e "$Green$1 ✅$ENDCOLOR"
+}
+
+function printFailure
+{
+	echo -e "$Red$1 ⛔$ENDCOLOR"
+}
+
+function printWithBoarder 
+{
+    echo -e "$1" > .printtmp
+    $2 >> .printtmp
+	cat .printtmp | expand |awk 'length($0) > length(longest) { longest = $0 } { lines[NR] = $0 } END { gsub(/./, "=", longest); print "+=" longest "=\+"; n = length(longest); for(i = 1; i <= NR; ++i) { printf("| %s %*s\n", lines[i], n - length(lines[i]) + 1, "|"); } print "+\=" longest "=+" }' 2> .tmp;
+}
+
 
 function waitAndClear {
-			sleep .4
-			echo -n ".."
-			sleep .4
-			echo -n ".."
-			sleep .4
-			clear
+sleep .4
+echo -n ".."
+sleep .4
+echo -n ".."
+sleep .4
+clear
 }
 
 
@@ -40,14 +71,6 @@ function menuBack
 	esac
 }
 #	$2 | expand | awk 'length($0) > length(longest) { longest = $0 } { lines[NR] = $0 } END { gsub(/./, "=", longest); print "+=" longest "=\+"; n = length(longest); for(i = 1; i <= NR; ++i) { printf("| %s %*s\n", lines[i], n - length(lines[i]) + 1, "|"); } print "+\=" longest "=+" }'
-
-function printWithBoarder 
-{
-    printf "$1\n" > .printtmp
-    $2 >> .printtmp
-	cat .printtmp | expand |awk 'length($0) > length(longest) { longest = $0 } { lines[NR] = $0 } END { gsub(/./, "=", longest); print "+=" longest "=\+"; n = length(longest); for(i = 1; i <= NR; ++i) { printf("| %s %*s\n", lines[i], n - length(lines[i]) + 1, "|"); } print "+\=" longest "=+" }' 2> .tmp;
-}
-
 
 function mainMenu {
 echo "please select one from the following options"
@@ -81,27 +104,7 @@ do
 done
 }
 
-###############
-#Message Colors 
-Red="\e[31m"
-Green="\e[32m"
-Yellow="\e[33m"
-ENDCOLOR="\e[0m"
 
-function printWarning
-{
-	echo -e "$Yellow$1  ⚠️$ENDCOLOR"
-}
-
-function printSucceful
-{
-	echo -e "$Green$1 ✅$ENDCOLOR"
-}
-
-function printFailure
-{
-	echo -e "$Red$1 ⛔$ENDCOLOR"
-}
 
 ######################################################
 ## to create data bases container if it is not exit ##
@@ -114,7 +117,7 @@ if [ -d databases ]
 	then
 	echo -n ""
 else
-	echo "This is your first time; Hope you Enjoy"
+	echo "This is your first time, Hope you Enjoy"
 	mkdir ./databases
 fi
 #############################################

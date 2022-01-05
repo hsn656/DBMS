@@ -1,11 +1,13 @@
 #!/bin/bash
-echo "+-----------------------+"
-echo "|   Creating Datebase   |"
-echo "+-----------------------+"
+#echo "+-----------------------+"
+#echo "|   Creating Datebase   |"
+#echo "+-----------------------+"
+# you colud replace the above way with the function below
+
 printWithBoarder "Creating Datebase"
 
 printWithBoarder "Avilable Databases are : " "ls ./databases"
-ls ./databases
+
 
 echo "===================================="
 
@@ -13,7 +15,7 @@ read -p "what is DB name? " dbname
 
 	if [ -d ./databases/$dbname ]
 		then
-		echo "DB already exists"
+		printFailure "DB already exists"
 		read -p "to back to main menu by pressing [y] or press [n] to try again : " answer
 		menuBack $answer
 		echo -n "creating a new Db .."
@@ -22,8 +24,7 @@ read -p "what is DB name? " dbname
 	else
 		mkdir ./databases/$dbname
 		sleep .7
-		echo "Creation successfull"
-		echo "1 DB with name $dbname has been created"
+		printSuccessful "1 DB with name $dbname has been created successfully"
 		read -p "Press [y] to go back to main menu or press [n] to create another database : " answer
 		menuBack $answer
 		echo -n "creating a new Db .."
