@@ -102,7 +102,7 @@ function menuBack
 #	$2 | expand | awk 'length($0) > length(longest) { longest = $0 } { lines[NR] = $0 } END { gsub(/./, "=", longest); print "+=" longest "=\+"; n = length(longest); for(i = 1; i <= NR; ++i) { printf("| %s %*s\n", lines[i], n - length(lines[i]) + 1, "|"); } print "+\=" longest "=+" }'
 
 function mainMenu {
-echo "please select one from the following options"
+echo "Please select one of the following options"
 select option in "Create DB" "Rename DB" "Drop DB" "Connect to DB" "Exit"
 do 
 	case $option in

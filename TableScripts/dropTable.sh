@@ -10,10 +10,17 @@ then
             case $choice in
             'y') 
                 rm ./databases/$dbname/$tableName
-                printSuccessful "Table $tableName deleted Successfully"
+                printSuccessful "Table \"$tableName\" deleted Successfully"
+                sleep 2
+                echo -n "going to previous menu.."
+                waitAndClear
+                afterConnection
                 break
                 ;;
             'n') 
+                echo -n "going to previous menu.."
+                waitAndClear
+                afterConnection
                 break
                 ;;
             *) printWarning "Choose Valid Option" ;;
@@ -21,6 +28,10 @@ then
             done
 else
     printFailure "$tableName Doesn't exist!"
+    sleep 2
+    echo -n "going to previous menu.."
+    waitAndClear
+    afterConnection
 fi
 
 

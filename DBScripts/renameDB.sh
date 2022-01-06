@@ -36,7 +36,7 @@ then
 			menuMessage
 			read answer	
 			menuBack $answer
-			echo -n "creating a new Db .. "
+			echo -n "Rename a new Db .. "
 			waitAndClear
 			. ./DBScripts/renameDB.sh
 		fi

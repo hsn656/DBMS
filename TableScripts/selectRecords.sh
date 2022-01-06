@@ -1,7 +1,8 @@
 
 ##############################
 ## temp for test
-dbname="hsn"
+
+
 function checkInt {
     expr $1 + 1 2> /dev/null >> /dev/null
 }
@@ -80,9 +81,7 @@ function loopBackOrNot {
     done
 }
 
-echo "avilable tables are : "
-ls ./databases/$dbname
-read -p "please enter table name : " tableName
+read -p "Enter table name to select from: " tableName
 
 
 if [ -a ./databases/$dbname/$tableName ]
@@ -134,9 +133,7 @@ if [ -a ./databases/$dbname/$tableName ]
 	esac
     done
     
-    echo "+----------------------------+"
-    echo "|        The Result          |"
-    echo "+----------------------------+"
+printWithBoarder "        $tableName        "
 
     cat ./.tmp | column -s ":" -t
     rm ./.tmp

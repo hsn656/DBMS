@@ -43,7 +43,6 @@ function afterConnection
                 . ./TableScripts/createTable.sh
                 ;;
             "Drop table" )
-                echo "drop table"
                 . ./TableScripts/dropTable.sh
                 ;;
             "Rename table" )
@@ -59,13 +58,13 @@ function afterConnection
                 . ./TableScripts/deleteRecord.sh
                 ;;
             "Select from table" )
-                echo "Select from table"
+                . ./TableScripts/selectRecords.sh
                 ;;
             "Back to main menu" )
                 menuBack y
                 ;;   
             * )
-                printWarning "not valid option"
+                printWarning "Please choose valid option"
                 ;;
         esac
     done
@@ -74,6 +73,7 @@ function afterConnection
 function beforeConnection
 {
     clear
+    printWithBoarder "   Connect to DB   "
     printWithBoarder "Available Databases:" "ls -1 ./databases"
     read -p "Enter DB name : " dbname
     if [ -d ./databases/$dbname ]

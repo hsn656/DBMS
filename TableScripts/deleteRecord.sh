@@ -1,20 +1,12 @@
 
 ##############################
 ## temp for test
-dbname="hsn"
 
 function checkInt {
     expr $1 + 1 2> /dev/null >> /dev/null
 }
 
-
-#############################
-
-
-
-printWithBoarder "avilable tables : " "ls -1 ./databases/$dbname"
-read -p "please enter table name : " tableName
-
+read -p "Enter table name to delete from: " tableName
 
 if [ -a ./databases/$dbname/$tableName ]
     then
@@ -49,7 +41,7 @@ if [ -a ./databases/$dbname/$tableName ]
         checkInt $conditionIndex
         while [[ $? -ne 0 || $conditionIndex -le 0 || $conditionIndex -gt $coloumnsNomber ]]
         do
-            printWarning "please enter a valid value"
+            printWarning "please enter a valid option"
             read -p "condition on which coloumn number : " conditionIndex 
             checkInt $conditionIndex
         done 
@@ -78,9 +70,18 @@ if [ -a ./databases/$dbname/$tableName ]
         then
             cat ./.tmp > ./databases/$dbname/$tableName;
             rm ./.tmp;
-            printSuccessful "Deleted successfully"
+            printSuccessful "Record deleted successfully"
+            sleep 2
+            echo -n "going to previous menu.."
+            waitAndClear
+            afterConnection
+
         fi
 
 else
-    printWarning "there is no such table"
+    printFailure "\"$tableName\" Doesn't exist"
+    sleep 2
+    echo -n "going to previous menu.."
+    waitAndClear
+    afterConnection
 fi

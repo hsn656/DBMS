@@ -1,15 +1,31 @@
 #!/bin/bash 
 
-read -p "Table name you want to rename : " tableName
+read -p "Enter table name you want to rename : " tableName
 
 
-if [ -f  ./databases/$dbname/$tableName ]
+if [ -a  ./databases/$dbname/"$tableName" ]
 then
     read -p "Enter the new name : " newName
-    sudo mv  ./databases/$dbname/$tableName  ./databases/$dbname/$newName
-    echo "Table $tableName is now $newName"
+    if [ -a  ./databases/$dbname/"$newName" ]
+    then
+        printFailure "tbale with the name \"$newName\" exists"
+        sleep 2
+        echo -n "going to previous menu.."
+        waitAndClear
+        afterConnection        
+    else
+    mv  ./databases/$dbname/"$tableName"  ./databases/$dbname/"$newName"
+    printSuccessful "Table \"$tableName\" changed to \"$newName\""
+    echo -n "going to previous menu.."
+    waitAndClear
+    afterConnection
+    fi
 else
-    echo "$tableName Doesn't exist!"
+    printFailure "\"$tableName\" Doesn't exist"
+    sleep 2
+    echo -n "going to previous menu.."
+    waitAndClear
+    afterConnection
 fi
 
 
