@@ -14,6 +14,7 @@ Red="\e[31m"
 Green="\e[32m"
 Yellow="\e[0;33m"
 ENDCOLOR="\e[0m"
+Blue="\e[34m"
 bold="\033[1m"
 normal="\033[0m"
 
@@ -37,6 +38,11 @@ function printInfo
 	echo -e "$Blue$1 $ENDCOLOR"
 }
 
+function menuMessage
+{
+	echo -e "${bold}Press [y] to go back to main menu or press [n] to create a database :${normal}"
+}
+
 function printWithBoarder 
 {
     echo -e "$1" > .printtmp
@@ -52,6 +58,8 @@ function isValidName
 		return 0
 	else 
 		#conatin special char or number
+		printFailure "Invalid name"
+		printInfo "DB name can't be \"empty\" or cantaining numbers or special characters"
 		return 1 
 	fi
 }

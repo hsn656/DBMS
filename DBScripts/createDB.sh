@@ -3,22 +3,19 @@
 
 printWithBoarder "Creating Datebase"
 
-printWithBoarder "Avilable Databases are : " "ls ./databases"
+printWithBoarder "Avilable Databases: " "ls ./databases"
 
 
 echo "===================================="
 
 read -p "Enter new DB name? " dbname
 
-
-
-
-if [ $dbname ]
+if  isValidName "$dbname"
 then
-    if [ -d ./databases/$dbname  ]
+	if [ -d ./databases/$dbname  ]
 		then
-		printFailure "DB already exists"
-		printInfo "Press [y] to go back to main menu or press [n] to create another database : "
+		printFailure "DB with the name \"$dbname\" already exists"
+		echo "Press [y] to go back to main menu or press [n] to create another database : "
 		read answer	
 		menuBack $answer
 		echo -n "creating a new Db .. "
@@ -28,7 +25,7 @@ then
 		mkdir ./databases/$dbname
 		sleep .7
 		echo -n "creating a new Db .. "
-		printSuccessful "\n1 DB with name \"$dbname\" has been created successfully"
+		printSuccessful "1 DB with name \"$dbname\" has been created successfully"
 		printInfo "Press [y] to go back to main menu or press [n] to create another database : " 
 		read answer
 		menuBack $answer
@@ -36,11 +33,10 @@ then
 		. ./DBScripts/createDB.sh
 	fi
 else
-    printWarning "You cant enter Empty string"
-	printInfo "Press [y] to go back to main menu or press [n] to create a database : "
-	read -p "[y] or [n]? " answer	
+	echo "Press [y] to go back to main menu or press [n] to create a database : "
+	read answer	
 	menuBack $answer
-	echo -n "creating a new Db .. \n"
+	echo -n "creating a new Db .. "
 	waitAndClear
 	. ./DBScripts/createDB.sh
 fi
