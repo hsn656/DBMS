@@ -23,6 +23,7 @@ then
 		. ./DBScripts/createDB.sh
 	else
 		mkdir ./databases/$dbname
+		mkdir ./databases/$dbname/.tmptable
 		sleep .7
 		echo -n "creating a new Db .. "
 		printSuccessful "\nDB with name \"$dbname\" has been created successfully"

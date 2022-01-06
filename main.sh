@@ -80,13 +80,13 @@ function menuBack
 		[Yy][Ee][Ss] )	
 			echo -n "Back to Main Menu .."
 			waitAndClear
-			printWithBoarder "  Back to Main Menu   "
+			printWithBoarder "  DBMS Main Menu   "
 			mainMenu
 			;;
 		[Yy])
 			echo -n "Back to Main Menu .."
 			waitAndClear
-			printWithBoarder "  Back to Main Menu   "
+			printWithBoarder "   DBMS Main Menu    "
 			mainMenu
 			;;
 		[Nn][Oo] )
@@ -94,7 +94,8 @@ function menuBack
 		[Nn] )
 			;;
 		* )
-			read -p "not valid input please try again and enter y or n " answer
+			printWarning "Not valid input please try again and enter y or n "
+			read answer
 			menuBack $answer
 	esac
 }
@@ -121,7 +122,7 @@ do
             . ./DBScripts/dropDB.sh
             ;;
         "Connect to DB" )
-			echo -n "Connecting to Database .."
+			echo -n "Loading Databases .."
 			waitAndClear
 			. ./DBSelectionMenu.sh
             ;;
@@ -144,19 +145,19 @@ done
 ##		  			 Script Start	    			##
 ######################################################
 clear
-printWithBoarder "   Welcome in our DBMS  "
+printWithBoarder "   Welcome in our DBMS   "
 
 ## to create data bases container if it is not exit ##
 if [ -d databases ]
 	then
 	echo -n ""
 else
-	echo "This is your first time, Hope you Enjoy"
+	echo "This is your first time, Hope you enjoy it"
 	mkdir ./databases
 fi
 #############################################
 
-PS3="Enter Number of option : "
+PS3="Select one of option : "
 
 mainMenu
 

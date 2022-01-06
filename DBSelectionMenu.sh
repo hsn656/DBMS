@@ -13,9 +13,6 @@ function checkInt {
     expr $1 + 1 2> /dev/null >> /dev/null
 }
 
-##############################
-## temp for test
-dbname="hsn"
 
 function checkInt {
     expr $1 + 1 2> /dev/null >> /dev/null
@@ -32,28 +29,30 @@ function checkPK {
     fi 
 }
 
+function afterConnection 
+{
+    clear
+    printSuccessful "\nConnected to \"$dbname\""
+    printWithBoarder "Available tables: " "ls -1 ./databases/$dbname"
+    echo "===================================="
 
-printWithBoarder "Available Databases:" "ls -1 ./databases"
-read -p "Enter DB name : " dbname
-if [ -d ./databases/$dbname ]
-    then
-    select option in "create table" "drop table" "Rename table" "update table" "insert record" "Delete from table" "Select from table"
+    select option in "Create table" "Drop table" "Rename table" "Update table" "Insert record" "Delete from table" "Select from table" "Back to main menu"
     do
         case $option in 
-            "create table" )
+            "Create table" )
                 . ./TableScripts/createTable.sh
                 ;;
-            "drop table" )
+            "Drop table" )
                 echo "drop table"
                 . ./TableScripts/dropTable.sh
                 ;;
             "Rename table" )
                 . ./TableScripts/renameTable.sh
                 ;;    
-            "update table" )
+            "Update table" )
                 . ./TableScripts/updateRecord.sh
                 ;;
-            "insert record" )
+            "Insert record" )
                 . ./TableScripts/insertRecord.sh
                 ;;
             "Delete from table" )
@@ -62,18 +61,35 @@ if [ -d ./databases/$dbname ]
             "Select from table" )
                 echo "Select from table"
                 ;;
+            "Back to main menu" )
+                menuBack y
+                ;;   
             * )
                 printWarning "not valid option"
                 ;;
         esac
     done
-else
-    printFailure "\"$dbname\" doesn't exist"
-    menuMessage
-    read answer
-    menuBack $answer
-    echo -n "Connecting to another DB .."
-    waitAndClear 
-    . ./DBSelectionMenu.sh
-fi
+}
 
+function beforeConnection
+{
+    clear
+    printWithBoarder "Available Databases:" "ls -1 ./databases"
+    read -p "Enter DB name : " dbname
+    if [ -d ./databases/$dbname ]
+        then
+        echo -n "Connecting to \"$dbname\".."
+        waitAndClear
+        afterConnection 
+    else
+        printFailure "\"$dbname\" doesn't exist"
+        menuMessage
+        read answer
+        menuBack $answer
+        echo -n "Connecting to another DB .."
+        waitAndClear 
+        . ./DBSelectionMenu.sh
+    fi
+}
+
+beforeConnection

@@ -4,11 +4,16 @@
 
 
 
-		printWarning "You cant enter Empty string"
-		printInfo "Press [y] to go back to main menu or press [n] to create a database : "
-		read -p "[y] or [n]? " answer	
-		menuBack $answer
-		echo -n "creating a new Db .. \n"
-		waitAndClear
-		. ./DBScripts/createDB.sh
+if grep $1 
+
+case $1 in  
+     * \: * )
+           echo "insdasda"
+          ;;
+	 * \% * )	
+	            echo "insdasda"
+       *)
+           echo "doesn't contin space"
+           ;;
+    esac
 	

@@ -5,17 +5,27 @@ read -p "Enter table name you want to create : " tableName
 ## this variable is to check PK 
 NoPK_Yet="true"
 
-if [ -a  ./databases/$dbname/$tableName ]
+if [ -a  ./databases/$dbname/"$tableName" ]
     then
-    printFailure "this table is already exist"
-    read -p "Press [y] to go back to main menu or press [n] to create another database : " answer
-    menuBack $answer
-    echo -n "creating a new Db .."
-    waitAndClear
-    . ./DBScripts/createTable.sh
+    printFailure "Table with name \"$tableName\" already exists"
+    menuMessage
+    select answer in "y" "n"
+    do
+        case $answer in
+        "y" )
+            beforeConnection
+            ;;
+        "n" )
+            afterConnection
+            ;; 
+        * )
+            printWarning "Please choose vlaid option"
+            ;;
+        esac
+    done    
    
 else
-    touch ./databases/$dbname/$tableName
+    touch ./databases/$dbname/.tmptable/"$tableName" 
     read -p "Enter number of coloumns : " coloumnsNomber
 
     ############################################
@@ -28,9 +38,6 @@ else
         expr $coloumnsNomber + 1 2> /dev/null >> /dev/null
     done
     ############################################
-
-
-    ############################################
     ## now read colomn type and names
     i=1
     while [ $i -le $coloumnsNomber ]
@@ -40,7 +47,7 @@ else
         ## gen name of field
         read -p "Enter column $i name : " coloumnsName;
         while [ -z "$coloumnsName" ]; do
-			echo "field name can't be empty";
+			printFailure "Field name can't be empty";
             read -p "Enter column $i name : " coloumnsName;
 		done
         ########################
@@ -52,13 +59,14 @@ else
             read -p "is this feild is a primary key? [Y/N] : " IsPK
             if [[ $IsPK == *(y)*(Y)*(yes)*(YES)*(Yes) ]]
             then
-                echo -n "%PK%" >> ./databases/$dbname/$tableName
+                echo -n "%PK%" >> ./databases/$dbname/.tmptable/$tableName
                 NoPK_Yet="false"
                 break
             elif [[ $IsPK = *(N)*(n)*(NO)*(No)*(no) ]]
             then
                 break
             fi
+           printWarning "Please Enter valid option" 
         done
         ##############################
 
@@ -68,7 +76,7 @@ else
         read -p "Enter a valid column $i datatype : [string/int] " dataType;
         while [[ "$dataType" != *(int)*(string) || -z $dataType ]]
         do
-			echo "Invalid datatype";
+			printWarning "Invalid datatype"
 			read -p "Enter a valid column $i datatype again : [string/int] " dataType;
 		done
         ##############################
@@ -77,22 +85,20 @@ else
         ## write in the table file; check to stop adding ":" in the last field
         if [ $i -eq $coloumnsNomber ]
             then
-            echo $coloumnsName"%"$dataType"%" >> ./databases/$dbname/$tableName
+            echo $coloumnsName"%"$dataType"%" >> ./databases/$dbname/.tmptable/$tableName
         else
-            echo -n $coloumnsName"%"$dataType"%:" >> ./databases/$dbname/$tableName
+            echo -n $coloumnsName"%"$dataType"%:" >> ./databases/$dbname/.tmptable/$tableName
         fi
         ##############################
         ((i=$i+1))
 
     done
-
-    echo "###############################"
-    printSuccessful "1 Table was created successfully"
-    echo "###############################"
-    read -p "Press [y] to go back to main menu or press [n] to create another database : " answer
-    menuBack $answer
-    echo -n "creating a new Db .."
+    
+    mv ./databases/$dbname/.tmptable/$tableName ./databases/$dbname/$tableName
+    echo -n "Creating table .."
     waitAndClear
-    . ./DBScripts/createTable.sh
+    printSuccessful "\nTable created successfully"
+    sleep 1 
+    afterConnection
    
 fi

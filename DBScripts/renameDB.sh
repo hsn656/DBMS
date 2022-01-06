@@ -1,6 +1,6 @@
 #!/bin/bash
 printWithBoarder "   Renaming Datebase   "
-printWithBoarder "Avilable Databases are : " "ls ./databases"
+printWithBoarder "Avilable Databases are: " "ls ./databases"
 
 read -p "Which DB you want to rename : " oldName
 
