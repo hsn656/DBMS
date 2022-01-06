@@ -19,7 +19,7 @@ if [ -a  ./databases/$dbname/"$tableName" ]
             afterConnection
             ;; 
         * )
-            printWarning "Please choose vlaid option"
+            printWarning "Please choose valaid option"
             ;;
         esac
     done    

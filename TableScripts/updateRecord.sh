@@ -1,30 +1,18 @@
+printWithBoarder "   Updating Table   "
+printWithBoarder "Available tables: " "ls -1 ./databases/$dbname"
 
-##############################
-## temp for test
-dbname="hsn"
-function checkInt {
-    expr $1 + 1 2> /dev/null >> /dev/null
-}
+echo -e -n "\n${bold}please enter table name : ${normal}"
+read tableName
 
-function checkPK {
-   if `cut -f$1 -d: ./databases/hsn/test | grep -w $2 >> /dev/null 2>/dev/null`
-        then
-        return 1
-    else
-        return 0
-    fi 
-}
-#############################
-
-
-echo "avilable tables are : "
-ls ./databases/$dbname
-read -p "please enter table name : " tableName
-
-
-if [ -a ./databases/$dbname/$tableName ]
+if [ $tableName ]
+then
+    if [ -a ./databases/$dbname/$tableName ]
     then
+    clear
+    printWithBoarder "   Updating Table $tableName   "
     coloumnsNomber=`awk -F: 'NR==1 {print NF}' ./databases/$dbname/$tableName`
+       
+        ## to read all column names and data types
         for (( i=1; i <= $coloumnsNomber; i++ ))
         do
             #######################    
@@ -52,7 +40,8 @@ if [ -a ./databases/$dbname/$tableName ]
         checkInt $coloumnIndex
         while [[ $? -ne 0 || $coloumnIndex -le 0 || $coloumnIndex -gt $coloumnsNomber ]]
         do
-            echo "please enter a valid value"
+            printFailure "please enter a valid value"
+            printInfo "ener value in between 1 and $coloumnsNomber"
             read -p "enter nomber of coloumn you want to update : " coloumnIndex 
             checkInt $coloumnIndex
         done 
@@ -65,7 +54,8 @@ if [ -a ./databases/$dbname/$tableName ]
             checkInt $newValue
             while [ $? != 0 ]
             do
-                echo "please enter a valid value"
+                printFailure "please enter a valid value"
+                printInfo "enter only numbers"
                 read -p "enter (${coloumnsNames[coloumnIndex]}) of type (${coloumnsTypes[coloumnIndex]}) : " newValue
                 checkInt $newValue
             done
@@ -78,8 +68,8 @@ if [ -a ./databases/$dbname/$tableName ]
             checkPK $coloumnIndex $newValue
             while [ $? != 0 ]
             do
-                echo "Violation of PK constraint"
-                echo "please enter a valid value"
+                printFailure "Violation of PK constraint"
+                printFailure "please enter a valid value"
                 read -p "enter (${coloumnsNames[coloumnIndex]}) of type (${coloumnsTypes[coloumnIndex]}) : " newValue
                 checkPK $coloumnIndex $newValue
             done
@@ -97,7 +87,8 @@ if [ -a ./databases/$dbname/$tableName ]
         checkInt $conditionIndex
         while [[ $? -ne 0 || $conditionIndex -le 0 || $conditionIndex -gt $coloumnsNomber ]]
         do
-            echo "please enter a valid value"
+            printFailure "please enter a valid value"
+            printInfo "ener value in between 1 and $coloumnsNomber"
             read -p "condition on which coloumn number : " conditionIndex 
             checkInt $conditionIndex
         done 
@@ -111,7 +102,8 @@ if [ -a ./databases/$dbname/$tableName ]
             checkInt $conditionValue
             while [ $? != 0 ]
             do
-                echo "please enter a valid value"
+                printFailure "please enter a valid value"
+                printInfo "enter only numbers"
                 read -p "enter (${coloumnsNames[conditionIndex]}) of type (${coloumnsTypes[conditionIndex]}) : " conditionValue
                 checkInt $conditionValue
             done
@@ -127,10 +119,9 @@ if [ -a ./databases/$dbname/$tableName ]
         if testPK=`grep "%:" ./databases/$dbname/$tableName | cut -d ":" -f$coloumnIndex | grep "%PK%" ` 
         then 
             x=`cat ./.tmp | cut -f$coloumnIndex -d:| grep -w $newValue|wc -l | cut -f1 -d" "`
-            echo $x
             if [ $x -gt 1 ]
             then
-                echo "update fail due to PK constraint violation"
+                printFailure "update fail due to PK constraint violation"
                  rm ./.tmp;
             fi   
         fi
@@ -139,9 +130,32 @@ if [ -a ./databases/$dbname/$tableName ]
         then
             cat ./.tmp > ./databases/$dbname/$tableName;
             rm ./.tmp;
-            echo "update successfull"
+            printSuccessful "update successfull"
         fi
-
+    else
+        printFailure "there is no such table"
+    fi
 else
-    echo "there is no such table"
+    printFailure "invalid input please enter a valid name"
 fi
+
+## to go back or stay
+echo -e "${bold}Press [y] to go back to previous menu or press [n] to try again :${normal}"
+select answer in "y" "n"
+do
+    case $answer in
+    "y" )
+        echo -n "going back .."
+        waitAndClear
+        afterConnection
+        ;;
+    "n" )
+        echo -n "Updating table .."
+        waitAndClear
+        . ./TableScripts/updateRecord.sh
+        ;; 
+    * )
+        printWarning "Please choose a valid option [use 1 or 2 ]"
+        ;;
+    esac
+done 

@@ -13,11 +13,6 @@ function checkInt {
     expr $1 + 1 2> /dev/null >> /dev/null
 }
 
-
-function checkInt {
-    expr $1 + 1 2> /dev/null >> /dev/null
-}
-
 #############################
 
 function checkPK {
@@ -50,6 +45,8 @@ function afterConnection
                 . ./TableScripts/renameTable.sh
                 ;;    
             "Update table" )
+                echo -n "Updating table .."
+                waitAndClear
                 . ./TableScripts/updateRecord.sh
                 ;;
             "Insert record" )
