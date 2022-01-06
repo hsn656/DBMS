@@ -15,7 +15,7 @@ then
 	if [ -d ./databases/$dbname  ]
 		then
 		printFailure "DB with the name \"$dbname\" already exists"
-		echo "Press [y] to go back to main menu or press [n] to create another database : "
+		menuMessage
 		read answer	
 		menuBack $answer
 		echo -n "creating a new Db .. "
@@ -25,15 +25,15 @@ then
 		mkdir ./databases/$dbname
 		sleep .7
 		echo -n "creating a new Db .. "
-		printSuccessful "1 DB with name \"$dbname\" has been created successfully"
-		printInfo "Press [y] to go back to main menu or press [n] to create another database : " 
+		printSuccessful "\nDB with name \"$dbname\" has been created successfully"
+		menuMessage
 		read answer
 		menuBack $answer
 		waitAndClear
 		. ./DBScripts/createDB.sh
 	fi
 else
-	echo "Press [y] to go back to main menu or press [n] to create a database : "
+	menuMessage
 	read answer	
 	menuBack $answer
 	echo -n "creating a new Db .. "

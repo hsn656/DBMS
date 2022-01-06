@@ -1,9 +1,9 @@
 #!/bin/bash 
-printWithBoarder "   Deleting Datebase   "
-printWithBoarder "Avilable Databases are : " "ls ./databases"
+printWithBoarder "   Drop Datebase   "
+printWithBoarder "Avilable Databases: " "ls ./databases"
 
-read -p "Which DB name you want to drop : " dbname
-if [ $dbname ]
+read -p "Which DB you want to drop : " dbname
+if isValidName $dbname
 then
     if [ -d  ./databases/$dbname ]
     then
@@ -14,45 +14,43 @@ then
                 'y') 
                     rm -r ./databases/$dbname
                     sleep .7
-                    printSucceful "Successfull Delete"
-                    echo "1 DB with name $dbname has been droped"
-                    printInfo "Press [y] to go back to main menu or press [n] to rename another database : "
-                    read -p "[y] or [n]? " answer
+                    printSuccessful "\"$dbname\" dropped successfully"
+                    menuMessage
+                    read answer
                     menuBack $answer
-                    echo -n "dropping  Db .."
+                    echo -n "drop Db .."
                     waitAndClear
                     . ./DBScripts/dropDB.sh
                     break
                     ;;
                 'n') 
-                    printInfo "Press [y] to go back to main menu or press [n] to drop another database : "
-                    read -p "[y] or [n]? " answer
+                    menuMessage
+                    read answer
                     menuBack $answer
                     echo -n "Deleting Another Db .."
                     waitAndClear
                     . ./DBScripts/dropDB.sh             
                     break
                     ;;
-                *)  printWarning "Choose Valid Option"
-                    printInfo "Enter [1] or [2] "
+                *)  
+                    printWarning "Choose Valid Option"
                     ;;
                 esac
                 done
     else
-        printFailure "$dbname Doesn't exist!"
-        printInfo "Press [y] to go back to main menu or press [n] to drop a database : "
-        read -p "[y] or [n]? " answer
+        printFailure "\"$dbname\" Doesn't exist!"
+        menuMessage
+        read answer
         menuBack $answer
-        echo -n "Deleting Another Db .."
+        echo -n "Deleting Another DB .."
         waitAndClear
         . ./DBScripts/dropDB.sh 
     fi
 else
-    printWarning "You must Enter value"
-    printInfo "Press [y] to go back to main menu or press [n] to drop a database : "
-    read -p "[y] or [n]? " answer
+    menuMessage
+    read answer
     menuBack $answer
-    echo -n "Deleting Another Db .."
+    echo -n "Deleting Another DB .."
     waitAndClear
     . ./DBScripts/dropDB.sh
 fi

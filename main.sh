@@ -3,10 +3,8 @@
 ########################################################
 ## function to let u back to menu according to yes or no
 ########################################################
-###############
 shopt -s extglob
 export LC_COLLATE=C
-
 
 
 #Message Colors 
@@ -20,7 +18,7 @@ normal="\033[0m"
 
 function printWarning
 {
-	echo -e "$Yellow$1  ⚠️$ENDCOLOR"
+	echo -e "$Yellow$1 ⚠️$ENDCOLOR"
 }
 
 function printSuccessful
@@ -40,7 +38,7 @@ function printInfo
 
 function menuMessage
 {
-	echo -e "${bold}Press [y] to go back to main menu or press [n] to create a database :${normal}"
+	echo -e "${bold}Press [y] to go back to main menu or press [n] to try again :${normal}"
 }
 
 function printWithBoarder 
@@ -54,12 +52,12 @@ function isValidName
 {
 	if [[ $1 =~ ^[A-Za-z]+$ ]] 
 	then
-		#true "valid Name the contain onlt characters"
+		#true "valid Name the contain only characters"
 		return 0
 	else 
 		#conatin special char or number
 		printFailure "Invalid name"
-		printInfo "DB name can't be \"empty\" or cantaining numbers or special characters"
+		printInfo "DB name can't be \"empty\" or cantaining numbers, spaces or special characters"
 		return 1 
 	fi
 }
@@ -128,7 +126,7 @@ do
 			. ./DBSelectionMenu.sh
             ;;
 		"Exit" )
-			echo "Bye"
+			echo -e "\n ${bold}Bye${normal} 👋"
 			exit
             ;;
 		* )
@@ -141,12 +139,6 @@ do
 	esac
 done
 }
-
-
-###############
-#Message Colors 
-
-
 
 ######################################################
 ##		  			 Script Start	    			##

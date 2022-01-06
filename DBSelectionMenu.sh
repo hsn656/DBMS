@@ -33,8 +33,8 @@ function checkPK {
 }
 
 
-printWithBoarder "Available Databases are :" "ls -1 ./databases"
-read -p "enter DB Name : " dbname
+printWithBoarder "Available Databases:" "ls -1 ./databases"
+read -p "Enter DB name : " dbname
 if [ -d ./databases/$dbname ]
     then
     select option in "create table" "drop table" "Rename table" "update table" "insert record" "Delete from table" "Select from table"
@@ -64,14 +64,16 @@ if [ -d ./databases/$dbname ]
                 ;;
             * )
                 printWarning "not valid option"
-                read -p "please try a valid option or you can go to main menu by pressing y? " answer
-                menuBack $answer
-                echo $PWD
-                . ./DBSelectionMenu.sh
                 ;;
         esac
     done
 else
-    printWarning "not valid"
+    printFailure "\"$dbname\" doesn't exist"
+    menuMessage
+    read answer
+    menuBack $answer
+    echo -n "Connecting to another DB .."
+    waitAndClear 
+    . ./DBSelectionMenu.sh
 fi
 
