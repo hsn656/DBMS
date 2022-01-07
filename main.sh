@@ -33,7 +33,7 @@ function printFailure
 
 function printInfo
 {
-	echo -e "$Blue$1 $ENDCOLOR"
+	echo -e "$Blue$1 ℹ️$ENDCOLOR"
 }
 
 function menuMessage
@@ -158,7 +158,7 @@ else
 fi
 #############################################
 
-PS3="Select one of option : "
+PS3="Select one of options : "
 
 mainMenu
 

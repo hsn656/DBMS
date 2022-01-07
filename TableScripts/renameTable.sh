@@ -1,31 +1,29 @@
 #!/bin/bash 
-
+printSuccessful "\nConnected to \"$dbname\""
+printWithBoarder "   Rename Table   "
+printWithBoarder "avilable tables are : " "ls -1 ./databases/$dbname"
 read -p "Enter table name you want to rename : " tableName
 
-
-if [ -a  ./databases/$dbname/"$tableName" ]
+if [ $tableName ]
 then
-    read -p "Enter the new name : " newName
-    if [ -a  ./databases/$dbname/"$newName" ]
+    if [ -a  ./databases/$dbname/"$tableName" ]
     then
-        printFailure "tbale with the name \"$newName\" exists"
-        sleep 2
-        echo -n "going to previous menu.."
-        waitAndClear
-        afterConnection        
+        read -p "Enter the new name : " newName
+        if [ -a  ./databases/$dbname/"$newName" ]
+        then
+            printFailure "tbale with the name \"$newName\" exists"
+        else
+        mv  ./databases/$dbname/"$tableName"  ./databases/$dbname/"$newName"
+        printSuccessful "Table \"$tableName\" changed to \"$newName\""
+        fi
     else
-    mv  ./databases/$dbname/"$tableName"  ./databases/$dbname/"$newName"
-    printSuccessful "Table \"$tableName\" changed to \"$newName\""
-    echo -n "going to previous menu.."
-    waitAndClear
-    afterConnection
+        printFailure "\"$tableName\" Doesn't exist"
     fi
 else
-    printFailure "\"$tableName\" Doesn't exist"
-    sleep 2
-    echo -n "going to previous menu.."
-    waitAndClear
-    afterConnection
+  printFailure "invalid input please enter a valid name"
 fi
+
+
+routeFromTable renameTable.sh "Rename table .."
 
 

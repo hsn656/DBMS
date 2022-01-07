@@ -1,11 +1,12 @@
 #!/bin/bash
+printSuccessful "\nConnected to \"$dbname\""
 printWithBoarder "   Creating Table   "
 printWithBoarder "Already existing tables: " "ls -1 ./databases/$dbname"
 
 read -p "Enter table name you want to create : " tableName
-
 ## this variable is to check PK 
 NoPK_Yet="true"
+
 if [ $tableName ]
 then
     if [ -a  ./databases/$dbname/"$tableName" ]
@@ -119,22 +120,4 @@ else
     printFailure "invalid input please enter a valid name"
 fi
 
-echo -e "${bold}choose [y] to go back to previous menu or choose [n] to try again :${normal}"
-select answer in "y" "n"
-do
-    case $answer in
-    "y" )
-        echo -n "going back .."
-        waitAndClear
-        afterConnection
-        ;;
-    "n" )
-        echo -n "Creating table .."
-        waitAndClear
-        . ./TableScripts/createTable.sh
-        ;; 
-    * )
-        printWarning "Please choose a valid option [use 1 or 2 ]"
-        ;;
-    esac
-done 
+routeFromTable createTable.sh "Create table .."

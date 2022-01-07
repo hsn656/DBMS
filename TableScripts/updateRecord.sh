@@ -1,3 +1,77 @@
+function checkUpdate
+{
+    ##############################################
+    ## check data type of new value
+    read -p "Enter new value for (${coloumnsNames[coloumnIndex]}) of type (${coloumnsTypes[coloumnIndex]}) : " newValue
+    
+    if [ "$newValue" ]
+    then
+        echo "nothin">> /dev/null
+        #nothing
+    else 
+        printWarning "please enter a valid value"
+        checkUpdate
+    fi
+
+    
+    if [ ${coloumnsTypes[coloumnIndex]} == "int" ]
+        then
+        checkInt $newValue
+        if [ $? != 0 ]
+        then
+            printFailure "Please enter a valid value"
+            printInfo "Enter only numbers"
+            checkUpdate
+        fi
+    fi
+    ####################
+    ## check if he update pk
+
+    if testPK=`grep "%:" ./databases/$dbname/$tableName | cut -d ":" -f$coloumnIndex | grep "%PK%" ` 
+    then
+        checkPK $coloumnIndex "$newValue"
+        while [ $? != 0 ]
+        do
+            printFailure "Violation of PK constraint"
+            printWarning "Please enter a valid value"
+            checkUpdate
+        done
+    fi
+}
+
+function checkCondition
+{
+    
+    #####################################
+    ## check data type of condition value
+    read -p "enter (${coloumnsNames[conditionIndex]}) of type (${coloumnsTypes[conditionIndex]}) : " conditionValue
+    
+    if [ "$conditionValue" ]
+    then
+        echo "nothin">> /dev/null
+        #nothing
+    else 
+        printWarning "please enter a valid value"
+        checkCondition
+    fi
+
+    
+    if [ ${coloumnsTypes[conditionIndex]} == "int" ]
+        then
+        checkInt $conditionValue
+        if [ $? != 0 ]
+        then
+            printWarning "Please enter a valid value"
+            printInfo "Enter only numbers"
+            checkCondition
+        fi
+    fi
+}
+
+
+
+
+printSuccessful "\nConnected to \"$dbname\""
 printWithBoarder "   Updating Table   "
 printWithBoarder "Available tables: " "ls -1 ./databases/$dbname"
 
@@ -36,44 +110,18 @@ then
 
         ###############################################
         ## get index of the coloumn he wanted to update
-        read -p "enter nomber of coloumn you want to update : " coloumnIndex 
+        read -p "Enter column number you want to update : " coloumnIndex 
         checkInt $coloumnIndex
         while [[ $? -ne 0 || $coloumnIndex -le 0 || $coloumnIndex -gt $coloumnsNomber ]]
         do
-            printFailure "please enter a valid value"
-            printInfo "ener value in between 1 and $coloumnsNomber"
-            read -p "enter nomber of coloumn you want to update : " coloumnIndex 
+            printFailure "Please enter a valid value"
+            printInfo "Ener value in between 1 and $coloumnsNomber"
+            read -p "Enter column number you want to update : " coloumnIndex 
             checkInt $coloumnIndex
         done 
 
-        ##############################################
-        ## check data type of new value
-        read -p "Enter a new value of type (${coloumnsTypes[coloumnIndex]}) : " newValue;
-        if [ ${coloumnsTypes[coloumnIndex]} == "int" ]
-            then
-            checkInt $newValue
-            while [ $? != 0 ]
-            do
-                printFailure "please enter a valid value"
-                printInfo "enter only numbers"
-                read -p "enter (${coloumnsNames[coloumnIndex]}) of type (${coloumnsTypes[coloumnIndex]}) : " newValue
-                checkInt $newValue
-            done
-        fi
-        ####################
-        ## check if he update pk
+        checkUpdate
 
-        if testPK=`grep "%:" ./databases/$dbname/$tableName | cut -d ":" -f$coloumnIndex | grep "%PK%" ` 
-        then
-            checkPK $coloumnIndex $newValue
-            while [ $? != 0 ]
-            do
-                printFailure "Violation of PK constraint"
-                printFailure "please enter a valid value"
-                read -p "enter (${coloumnsNames[coloumnIndex]}) of type (${coloumnsTypes[coloumnIndex]}) : " newValue
-                checkPK $coloumnIndex $newValue
-            done
-        fi
         ################################
         ## read condition   
         for (( i=1; i <= $coloumnsNomber; i++ ))
@@ -87,75 +135,44 @@ then
         checkInt $conditionIndex
         while [[ $? -ne 0 || $conditionIndex -le 0 || $conditionIndex -gt $coloumnsNomber ]]
         do
-            printFailure "please enter a valid value"
+            printWarning "Please enter a valid value"
             printInfo "ener value in between 1 and $coloumnsNomber"
             read -p "condition on which coloumn number : " conditionIndex 
             checkInt $conditionIndex
         done 
 
 
-        ##############################################
-        ## check data type of condition value
-        read -p "Enter a condtion value of type (${coloumnsTypes[conditionIndex]}) : " conditionValue;
-        if [ ${coloumnsTypes[conditionIndex]} == "int" ]
-            then
-            checkInt $conditionValue
-            while [ $? != 0 ]
-            do
-                printFailure "please enter a valid value"
-                printInfo "enter only numbers"
-                read -p "enter (${coloumnsNames[conditionIndex]}) of type (${coloumnsTypes[conditionIndex]}) : " conditionValue
-                checkInt $conditionValue
-            done
-        fi
-
+        checkCondition
         ############################### ci=2 && cvalue=hsn >>> $2==hsn && 3=>23 >>>> $3=23
         ## to update table 
-        awk -F:  '( NR!=1 && $"'$conditionIndex'"=="'$conditionValue'" ) {$"'$coloumnIndex'"="'$newValue'"} {for(i=1 ;i<=NF ;i++ ) { if (i==NF) print $i; else printf "%s",$i":"}}' ./databases/$dbname/$tableName > ./.tmp;
+        awk -F:  '( NR!=1 && $"'$conditionIndex'"=="'"${conditionValue}"'" ) {$"'$coloumnIndex'"="'"${newValue}"'"} {for(i=1 ;i<=NF ;i++ ) { if (i==NF) print $i; else printf "%s",$i":"}}' ./databases/$dbname/$tableName > ./.tmp1;
         
 
         #####################################
         ## to prevent update if it violate pk
         if testPK=`grep "%:" ./databases/$dbname/$tableName | cut -d ":" -f$coloumnIndex | grep "%PK%" ` 
         then 
-            x=`cat ./.tmp | cut -f$coloumnIndex -d:| grep -w $newValue|wc -l | cut -f1 -d" "`
+            x=`cat ./.tmp1 | cut -f$coloumnIndex -d:| grep -w "$newValue"|wc -l | cut -f1 -d" "`
             if [ $x -gt 1 ]
             then
-                printFailure "update fail due to PK constraint violation"
-                 rm ./.tmp;
+                printFailure "Update fail due to PK constraint violation"
+                 rm ./.tmp1;
             fi   
         fi
         
-        if [ -a ./.tmp ]
+        if [ -a ./.tmp1 ]
         then
-            cat ./.tmp > ./databases/$dbname/$tableName;
-            rm ./.tmp;
-            printSuccessful "update successfull"
+            cat ./.tmp1 > ./databases/$dbname/$tableName;
+            rm ./.tmp1;
+            printSuccessful "Update successfull"
         fi
     else
-        printFailure "there is no such table"
+        printFailure "Table \"$tableName\" doesn't exist"
     fi
 else
-    printFailure "invalid input please enter a valid name"
+    printFailure "Invalid input please enter a valid name"
 fi
 
-## to go back or stay
-echo -e "${bold}choose [y] to go back to previous menu or choose [n] to try again :${normal}"
-select answer in "y" "n"
-do
-    case $answer in
-    "y" )
-        echo -n "going back .."
-        waitAndClear
-        afterConnection
-        ;;
-    "n" )
-        echo -n "Updating table .."
-        waitAndClear
-        . ./TableScripts/updateRecord.sh
-        ;; 
-    * )
-        printWarning "Please choose a valid option [use 1 or 2 ]"
-        ;;
-    esac
-done 
+##route 
+
+routeFromTable updateRecord.sh "Update table .."
