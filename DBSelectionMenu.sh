@@ -29,7 +29,7 @@ function afterConnection
     clear
     printSuccessful "\nConnected to \"$dbname\""
     printWithBoarder "Available tables: " "ls -1 ./databases/$dbname"
-    rm ./databases/$dbname/.tmptable/*
+    rm ./databases/$dbname/.tmptable/* >> /dev/null 2>/dev/null
     echo "===================================="
 
     select option in "Create table" "Drop table" "Rename table" "Update table" "Insert record" "Delete from table" "Select from table" "Back to main menu"
@@ -58,6 +58,8 @@ function afterConnection
                 . ./TableScripts/deleteRecord.sh
                 ;;
             "Select from table" )
+                echo -n "Selecting from table .."
+                waitAndClear
                 . ./TableScripts/selectRecords.sh
                 ;;
             "Back to main menu" )

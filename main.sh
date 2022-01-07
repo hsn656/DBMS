@@ -158,7 +158,7 @@ else
 fi
 #############################################
 
-PS3="Select one of option : "
+PS3="Select one of options : "
 
 mainMenu
 

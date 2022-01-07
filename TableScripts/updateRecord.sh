@@ -111,25 +111,25 @@ then
 
         ############################### ci=2 && cvalue=hsn >>> $2==hsn && 3=>23 >>>> $3=23
         ## to update table 
-        awk -F:  '( NR!=1 && $"'$conditionIndex'"=="'$conditionValue'" ) {$"'$coloumnIndex'"="'$newValue'"} {for(i=1 ;i<=NF ;i++ ) { if (i==NF) print $i; else printf "%s",$i":"}}' ./databases/$dbname/$tableName > ./.tmp;
+        awk -F:  '( NR!=1 && $"'$conditionIndex'"=="'$conditionValue'" ) {$"'$coloumnIndex'"="'$newValue'"} {for(i=1 ;i<=NF ;i++ ) { if (i==NF) print $i; else printf "%s",$i":"}}' ./databases/$dbname/$tableName > ./.tmp1;
         
 
         #####################################
         ## to prevent update if it violate pk
         if testPK=`grep "%:" ./databases/$dbname/$tableName | cut -d ":" -f$coloumnIndex | grep "%PK%" ` 
         then 
-            x=`cat ./.tmp | cut -f$coloumnIndex -d:| grep -w $newValue|wc -l | cut -f1 -d" "`
+            x=`cat ./.tmp1 | cut -f$coloumnIndex -d:| grep -w $newValue|wc -l | cut -f1 -d" "`
             if [ $x -gt 1 ]
             then
                 printFailure "update fail due to PK constraint violation"
-                 rm ./.tmp;
+                 rm ./.tmp1;
             fi   
         fi
         
-        if [ -a ./.tmp ]
+        if [ -a ./.tmp1 ]
         then
-            cat ./.tmp > ./databases/$dbname/$tableName;
-            rm ./.tmp;
+            cat ./.tmp1 > ./databases/$dbname/$tableName;
+            rm ./.tmp1;
             printSuccessful "update successfull"
         fi
     else
