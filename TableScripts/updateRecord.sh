@@ -140,7 +140,7 @@ else
 fi
 
 ## to go back or stay
-echo -e "${bold}Press [y] to go back to previous menu or press [n] to try again :${normal}"
+echo -e "${bold}choose [y] to go back to previous menu or choose [n] to try again :${normal}"
 select answer in "y" "n"
 do
     case $answer in

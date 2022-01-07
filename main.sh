@@ -38,7 +38,7 @@ function printInfo
 
 function menuMessage
 {
-	echo -e "${bold}Press [y] to go back to main menu or press [n] to try again :${normal}"
+	echo -e "${bold}choose [y] to go back to main menu or choose [n] to try again :${normal}"
 }
 
 function printWithBoarder 
@@ -144,6 +144,7 @@ done
 ######################################################
 ##		  			 Script Start	    			##
 ######################################################
+
 clear
 printWithBoarder "   Welcome in our DBMS   "
 

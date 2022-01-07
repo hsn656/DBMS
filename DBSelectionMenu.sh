@@ -29,12 +29,15 @@ function afterConnection
     clear
     printSuccessful "\nConnected to \"$dbname\""
     printWithBoarder "Available tables: " "ls -1 ./databases/$dbname"
+    rm ./databases/$dbname/.tmptable/*
     echo "===================================="
 
     select option in "Create table" "Drop table" "Rename table" "Update table" "Insert record" "Delete from table" "Select from table" "Back to main menu"
     do
         case $option in 
             "Create table" )
+                echo -n "Creating table .."
+                waitAndClear
                 . ./TableScripts/createTable.sh
                 ;;
             "Drop table" )
