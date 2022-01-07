@@ -4,16 +4,10 @@
 
 
 
-if grep $1 
-
-case $1 in  
-     * \: * )
-           echo "insdasda"
-          ;;
-	 * \% * )	
-	            echo "insdasda"
-       *)
-           echo "doesn't contin space"
-           ;;
-    esac
+if [[ $1 =~ ^[ % ]+$ ]] 
+then 
+    echo "Invalid"
+else 
+    echo "Eshta"
+fi
 	
