@@ -1,7 +1,7 @@
 printWithBoarder "   Updating Table   "
 printWithBoarder "Available tables: " "ls -1 ./databases/$dbname"
 
-echo -e -n "\n${bold}please enter table name : ${normal}"
+echo -e -n "\n${bold}Enter table name: ${normal}"
 read tableName
 
 if [ $tableName ]
