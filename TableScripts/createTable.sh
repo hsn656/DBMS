@@ -11,23 +11,7 @@ if [ $tableName ]
 then
     if [ -a  ./databases/$dbname/"$tableName" ]
         then
-        printFailure "Table with name \"$tableName\" already exists"
-        menuMessage
-        select answer in "y" "n"
-        do
-            case $answer in
-            "y" )
-                beforeConnection
-                ;;
-            "n" )
-                afterConnection
-                ;; 
-            * )
-                printWarning "Please choose valaid option"
-                ;;
-            esac
-        done    
-    
+        printFailure "Table with name \"$tableName\" already exists"    
     else
         touch ./databases/$dbname/.tmptable/"$tableName" 
         read -p "Enter number of coloumns : " coloumnsNomber
@@ -59,7 +43,7 @@ then
             ## gen name of field
             read -p "Enter column $i name : " coloumnsName;
             while [ -z "$coloumnsName" ]; do
-                printFailure "Field name can't be empty";
+                printWarning "Field name can't be empty";
                 read -p "Enter column $i name : " coloumnsName;
             done
             ########################
@@ -98,9 +82,9 @@ then
                 printWarning "Invalid datatype"
                 read -p "Enter a valid column $i datatype again : [string/int] " dataType;
             done
-            ##############################
+            ##############
 
-            ########################
+            ########################################
             ## write in the table file; check to stop adding ":" in the last field
             if [ $i -eq $coloumnsNomber ]
                 then

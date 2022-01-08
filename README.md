@@ -5,7 +5,7 @@
 **To use the DBMS** :</br></br>
 **First** you need to clone the project:
 ```
-git clone git@github.com:hsn656/DBMS.git
+git clone https://github.com/hsn656/DBMS
 ```
 </br>
 
